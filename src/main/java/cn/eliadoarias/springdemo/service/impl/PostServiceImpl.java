@@ -26,6 +26,9 @@ public class PostServiceImpl implements cn.eliadoarias.springdemo.service.PostSe
 
     @Override
     public void post(String title, String content, Integer userId) {
+        if(title==null || content==null || userId == null){
+            throw new ApiException(ExceptionEnum.INVALID_PARAMETERS);
+        }
         postMapper.insert(Post.builder().
                 title(title).
                 content(content).
@@ -34,12 +37,10 @@ public class PostServiceImpl implements cn.eliadoarias.springdemo.service.PostSe
                 time(LocalDateTime.now()).
                 build());
     }
-
     @Override
     public PostResponse viewAll() {
         return new PostResponse(postMapper.findAll());
     }
-
     @Override
     public void delete(Integer postId, Integer userId) {
         LambdaQueryWrapper<Post> wrapper = new LambdaQueryWrapper<>();
@@ -118,6 +119,7 @@ public class PostServiceImpl implements cn.eliadoarias.springdemo.service.PostSe
             report.setStatus(2);
             reportMapper.updateById(report);
             postMapper.deleteById(report.getPostId());
+            //数据库事务
         }
         if (approval == 2) {
             report.setStatus(3);

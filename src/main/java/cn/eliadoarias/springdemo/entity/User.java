@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 @Builder
 public class User {
     @TableId(type = IdType.AUTO)
+    //身份鉴权
     private Integer id;
 
     private String username;
