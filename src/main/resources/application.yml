@@ -8,3 +8,7 @@ spring:
     password: ${MYSQL_PASSWORD}
 server:
   port: ${MYSQL_PORT}
+jwt:
+  base-key: ${JWT_HMAC_KEY}
+  expiration-time: ${JWT_EXP_TIME}
+  refresh-time: ${JWT_REF_TIME}

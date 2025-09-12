@@ -12,6 +12,4 @@ public class PostRequest {
     private String title;
     @Size(min = 1, max = 500)
     private String content;
-    @JsonProperty("user_id")
-    Integer userId;
 }

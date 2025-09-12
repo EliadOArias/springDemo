@@ -22,19 +22,19 @@ public class UserController {
     @PostMapping("/register")
     public BasicResult<RegisterResponse> register(@Valid @RequestBody RegisterRequest request){
         log.info("user register:"+request.getUsername()+" password:"+request.getPassword());
-        Integer id = userService.register(
+        String token = userService.register(
                 request.getUsername(),
                 request.getPassword(),
                 request.getName(),
                 request.getUserType()
         );
-        return BasicResult.success(new RegisterResponse(request.getUsername()));
+        return BasicResult.success(new RegisterResponse(request.getUsername(), token));
     }
 
     @PostMapping("/login")
     public BasicResult<LoginResponse> login(@Valid @RequestBody LoginRequest request){
         log.info("user:"+request.getUsername()+" try to login.");
-        Integer id = userService.login(request.getUsername(),request.getPassword());
-        return BasicResult.success(new LoginResponse(id));
+        String token = userService.login(request.getUsername(),request.getPassword());
+        return BasicResult.success(new LoginResponse(token));
     }
 }

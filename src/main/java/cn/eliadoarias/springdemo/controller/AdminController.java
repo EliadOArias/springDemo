@@ -7,6 +7,7 @@ import cn.eliadoarias.springdemo.dto.PostResponse;
 import cn.eliadoarias.springdemo.dto.ReportResponse;
 import cn.eliadoarias.springdemo.result.BasicResult;
 import cn.eliadoarias.springdemo.service.PostService;
+import cn.eliadoarias.springdemo.util.JwtUtil;
 import com.sun.security.jgss.InquireType;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -19,14 +20,19 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
     @Resource
     private PostService postService;
+    @Resource
+    private JwtUtil jwtUtil;
     @GetMapping("/report")
     public BasicResult<ReportResponse> viewAll(){
         return BasicResult.success(postService.adminViewReport());
     }
     @PostMapping("/report")
-    public BasicResult<Object> decide(@Valid @RequestBody ApprovalRequest request){
+    public BasicResult<Object> decide(
+            @Valid @RequestBody ApprovalRequest request,
+            @RequestHeader("Authorization") String baseToken){
+        Integer userId = jwtUtil.getUserIdFromAuthorization(baseToken);
         postService.adminDecideReport(
-                request.getUserId(),
+                userId,
                 request.getReportId(),
                 request.getApproval()
         );

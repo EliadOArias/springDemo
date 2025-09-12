@@ -13,6 +13,8 @@ public enum ExceptionEnum {
     USERNAME_NOT_A_NUM(2003, "账号名含非数字"),
     WRONG_PASSWORD_LENGTH(2004, "密码长度不在8-16之间"),
     WRONG_USER_TYPE(2005, "用户类型错误"),
+    USER_EXP(2006, "登录token过期"),
+    WRONG_TOKEN(2006, "登录token错误"),
     INVALID_PARAMETERS(2009, "参数错误"),
     NO_OP(2020, "权限不足"),
     SERVER_ERROR(2099, "服务器异常");

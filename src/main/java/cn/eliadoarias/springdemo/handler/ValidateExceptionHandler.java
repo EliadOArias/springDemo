@@ -4,6 +4,7 @@ import cn.eliadoarias.springdemo.constant.ExceptionEnum;
 import cn.eliadoarias.springdemo.result.BasicResult;
 import cn.eliadoarias.springdemo.util.ExceptionUtil;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -37,5 +38,14 @@ public class ValidateExceptionHandler {
     public BasicResult<Object> handleNotFoundException(Exception e) {
         ExceptionUtil.printError(e);
         return BasicResult.error(ExceptionEnum.NOT_FOUND);
+    }
+
+    @ExceptionHandler({
+            ExpiredJwtException.class
+    })
+    @ResponseBody
+    public BasicResult<Object> handleExpiredJwtException(Exception e) {
+        ExceptionUtil.printError(e);
+        return BasicResult.error(ExceptionEnum.USER_EXP);
     }
 }

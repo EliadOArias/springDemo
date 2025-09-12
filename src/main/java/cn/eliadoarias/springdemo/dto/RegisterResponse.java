@@ -9,4 +9,5 @@ import lombok.Data;
 public class RegisterResponse {
     @JsonProperty("username")
     private String name;
+    private String token;
 }

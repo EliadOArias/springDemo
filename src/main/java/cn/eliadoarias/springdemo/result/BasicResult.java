@@ -1,6 +1,7 @@
 package cn.eliadoarias.springdemo.result;
 
 import cn.eliadoarias.springdemo.constant.ExceptionEnum;
+import cn.eliadoarias.springdemo.util.JwtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +20,7 @@ public class BasicResult<T> {
         return new BasicResult<>(HttpStatus.OK.value(), SUCCESS, null);
     }
 
+
     public static <N> BasicResult<N> success(N data){
         return new BasicResult<>(HttpStatus.OK.value(), SUCCESS, data);
     }
@@ -26,7 +28,9 @@ public class BasicResult<T> {
     public static <N> BasicResult<N> error(Integer code, String message){
         return new BasicResult<>(code, message, null);
     }
+
     public static <N> BasicResult<N> error(ExceptionEnum e){
         return new BasicResult<>(e.getCode(), e.getMessage(), null);
     }
+
 }

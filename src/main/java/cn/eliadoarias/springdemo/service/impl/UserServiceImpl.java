@@ -4,6 +4,7 @@ import cn.eliadoarias.springdemo.constant.ExceptionEnum;
 import cn.eliadoarias.springdemo.entity.User;
 import cn.eliadoarias.springdemo.exception.ApiException;
 import cn.eliadoarias.springdemo.mapper.UserMapper;
+import cn.eliadoarias.springdemo.util.JwtUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +20,11 @@ public class UserServiceImpl implements cn.eliadoarias.springdemo.service.UserSe
 
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private JwtUtil jwtUtil;
 
     @Override
-    public Integer login(String username, String password) {
+    public String login(String username, String password) {
         if (username == null || password == null) {
             throw new ApiException(ExceptionEnum.NOT_FOUND);
         }
@@ -35,11 +38,11 @@ public class UserServiceImpl implements cn.eliadoarias.springdemo.service.UserSe
                 throw new ApiException(ExceptionEnum.WRONG_PASSWORD);
             }
         }
-        return user.getId();
+        return jwtUtil.generateToken(username,user.getId());
     }
 
     @Override
-    public Integer register(String username, String password, String name, Integer userType) {
+    public String register(String username, String password, String name, Integer userType) {
         if (password.length() < 8 || password.length() > 16) {
             throw new ApiException(ExceptionEnum.WRONG_PASSWORD_LENGTH);
         }
@@ -66,7 +69,7 @@ public class UserServiceImpl implements cn.eliadoarias.springdemo.service.UserSe
                     userType(userType).
                     build();
             userMapper.insert(user);
-            return user.getId();
+            return jwtUtil.generateToken(username,user.getId());
         }
     }
 }

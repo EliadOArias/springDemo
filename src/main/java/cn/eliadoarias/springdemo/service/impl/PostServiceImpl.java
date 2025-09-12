@@ -1,5 +1,6 @@
 package cn.eliadoarias.springdemo.service.impl;
 
+import cn.eliadoarias.springdemo.config.JwtConfig;
 import cn.eliadoarias.springdemo.constant.ExceptionEnum;
 import cn.eliadoarias.springdemo.dto.PostResponse;
 import cn.eliadoarias.springdemo.dto.ReportResponse;
@@ -8,6 +9,7 @@ import cn.eliadoarias.springdemo.entity.Report;
 import cn.eliadoarias.springdemo.exception.ApiException;
 import cn.eliadoarias.springdemo.mapper.PostMapper;
 import cn.eliadoarias.springdemo.mapper.ReportMapper;
+import cn.eliadoarias.springdemo.util.JwtUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -23,19 +25,22 @@ public class PostServiceImpl implements cn.eliadoarias.springdemo.service.PostSe
     private PostMapper postMapper;
     @Resource
     private ReportMapper reportMapper;
+    @Resource
+    private JwtUtil jwtUtil;
 
     @Override
     public void post(String title, String content, Integer userId) {
         if(title==null || content==null || userId == null){
             throw new ApiException(ExceptionEnum.INVALID_PARAMETERS);
         }
-        postMapper.insert(Post.builder().
-                title(title).
-                content(content).
-                userId(userId).
-                likes(0).
-                time(LocalDateTime.now()).
-                build());
+
+        postMapper.insert(Post.builder()
+                        .title(title)
+                        .content(content)
+                        .userId(userId)
+                        .likes(0)
+                        .time(LocalDateTime.now())
+                        .build());
     }
     @Override
     public PostResponse viewAll() {
