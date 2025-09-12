@@ -14,6 +14,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -108,7 +109,7 @@ public class PostServiceImpl implements cn.eliadoarias.springdemo.service.PostSe
         wrapper.eq(Report::getStatus, 1);
         return new ReportResponse(reportMapper.selectList(wrapper));
     }
-
+    @Transactional
     @Override
     public void adminDecideReport(Integer userId, Integer reportId, Integer approval) {
         LambdaQueryWrapper<Report> wrapper = new LambdaQueryWrapper<>();
