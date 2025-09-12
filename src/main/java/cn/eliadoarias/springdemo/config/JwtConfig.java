@@ -24,6 +24,9 @@ public class JwtConfig {
     @Setter
     @Getter
     private long refreshTime;
+    @Setter
+    @Getter
+    private long refreshLimit;
 
     public void setBaseKey(String baseKey) {
         key = Keys.hmacShaKeyFor(baseKey.getBytes(StandardCharsets.UTF_8));

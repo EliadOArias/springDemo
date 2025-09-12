@@ -8,6 +8,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -61,6 +62,16 @@ public class JwtUtil {
             return this.generateToken(username, userId);
         }
         return token;
+    }
+
+    public boolean needRefresh(String baseToken){
+        String token = extractToken(baseToken);
+        return !parseToken(token).getExpiration().before(new Date(System.currentTimeMillis()+jwtConfig.getRefreshTime()));
+    }
+
+    public boolean canRefresh(HttpSession session){
+        long refreshTime = session.getAttribute("refresh_time")==null?0:(Long)session.getAttribute("refresh_time");
+        return refreshTime > System.currentTimeMillis();
     }
 
 }
